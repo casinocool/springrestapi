@@ -1,11 +1,30 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <title>Spring Security Example</title>
+    <title>My Profile</title>
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
+<h1>My Profile</h1>
 
+<p>Logged in as: <span sec:authentication="name"></span></p>
 
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+</form>
+
+<h2>User Information</h2>
+<div th:object="${user}">
+    <p><strong>Username:</strong> <span th:text="*{username}"></span></p>
+    <p><strong>Name:</strong> <span th:text="*{name}"></span> <span th:text="*{lastName}"></span></p>
+    <p><strong>Age:</strong> <span th:text="*{age}"></span></p>
+    <p><strong>Roles:</strong>
+        <span th:each="role : *{roles}" th:text="${role.name} + ' '"></span>
+    </p>
+</div>
+
+<div sec:authorize="hasRole('ADMIN')">
+    <a href="/admin">Go to Admin Panel</a>
+</div>
 </body>
 </html>

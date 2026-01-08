@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Edit User</title>
+</head>
+<body>
+<h1>Edit User</h1>
+
+<form th:action="@{/admin/save}" th:object="${user}" method="post">
+  <input type="hidden" th:field="*{id}">
+
+  <div>
+    <label>Username:</label>
+    <input type="text" th:field="*{username}">
+  </div>
+  <div>
+    <label>New Password (leave empty to keep current):</label>
+    <input type="password" th:field="*{password}">
+  </div>
+  <div>
+    <label>First Name:</label>
+    <input type="text" th:field="*{name}">
+  </div>
+  <div>
+    <label>Last Name:</label>
+    <input type="text" th:field="*{lastName}">
+  </div>
+  <div>
+    <label>Age:</label>
+    <input type="number" th:field="*{age}">
+  </div>
+
+  <div>
+    <label>Roles:</label><br>
+    <div th:each="role : ${roles}">
+      <input type="checkbox" th:value="${role.id}" name="roleIds"
+             th:checked="${user.roles.?[#this.id == role.id].size() > 0}">
+      <label th:text="${role.name}"></label>
+    </div>
+  </div>
+
+  <button type="submit">Update</button>
+  <a href="/admin">Cancel</a>
+</form>
+</body>
+</html>

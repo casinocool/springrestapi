@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <title>Admin Panel</title>
+</head>
+<body>
+<h1>Admin Panel</h1>
+
+<p>Logged in as: <span sec:authentication="name"></span></p>
+<form th:action="@{/logout}" method="post">
+  <button type="submit">Logout</button>
+</form>
+
+<a href="/admin/new">Add New User</a>
+
+<h2>All Users</h2>
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>Username</th>
+    <th>Name</th>
+    <th>Roles</th>
+    <th>Actions</th>
+  </tr>
+  <tr th:each="user : ${users}">
+    <td th:text="${user.id}"></td>
+    <td th:text="${user.username}"></td>
+    <td th:text="${user.name} + ' ' + ${user.lastName}"></td>
+    <td>
+      <span th:each="role : ${user.roles}" th:text="${role.name} + ' '"></span>
+    </td>
+    <td>
+      <a th:href="@{/admin/edit/{id}(id=${user.id})}">Edit</a>
+      <a th:href="@{/admin/delete/{id}(id=${user.id})}"
+         onclick="return confirm('Delete user?')">Delete</a>
+    </td>
+  </tr>
+</table>
+
+<p><a href="/user">My Profile</a></p>
+</body>
+</html>
